@@ -6,8 +6,8 @@ def batch():
     print("깃 허브쪽 배치 프로그램이 돌고 있습니다.")  # 배치 프로그램이 돌고 있다는 로그남김 log
     try:
         conn = None
-        conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
-        #conn = MySQLdb.connect(user='root', password='1234', db='open_source', charset='utf8')
+        #conn = MySQLdb.connect(user='seonghun', password='db20192455', db='seonghun$default',host='seonghun.mysql.pythonanywhere-services.com', charset='utf8')
+        conn = MySQLdb.connect(user='root', password='1234', db='open_source', charset='utf8')
         curs = conn.cursor()
 
         sql = "SELECT GIT_API_ADDRESS,FAV_REPOSITORY,GIT_UPDATED_AT FROM repository;"
@@ -56,7 +56,7 @@ def batch():
 def telegram(id,nick_name,fav_repository,user_date,updated_date,json,conn) : # 데이터 업데이트를 한다. 텔레그램의 경우 그리고 api를 쏜다.
     output_dict = None;
     curs = conn.cursor()
-
+    print(json)
     if json!=[] :
         date = datetime.strptime(user_date, '%Y-%m-%dT%H:%M:%SZ') + timedelta(seconds=+0)
         timestampStr = date.strftime("%Y-%m-%dT%H:%M:%SZ")

@@ -12,24 +12,21 @@ class UserView(APIView):
     def post(self, request):
         id = request.POST.get('id','')
         fav_repository = request.POST.get('fav_repository','')
-        nick_name = request.POST.get('nick_name', '')
-        type = request.POST.get('type', '')
+        nick_name = 'shchoi'
+        type = 'kakao'
         branch = request.POST.get('branch', '')
-        print(id)
         try:
             conn = None
             if len(id) == 0:
                 raise Exception('아이디는 비어 있으면 안됩니다.')
             if len(fav_repository) == 0:
                 raise Exception('관심 레파지토리는 비어 있으면 안됩니다.')
-            if len(nick_name) == 0:
-                raise Exception('별명은 비어 있으면 안됩니다.')
             if len(type) == 0:
                 raise Exception('타입은 비어 있으면 안됩니다.')
             if len(branch) == 0:
                 raise Exception('브랜치명은 비어 있으면 안됩니다.')
-            conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com',charset='utf8')
-            #conn = MySQLdb.connect(user='root', password='1234', db='open_source', charset='utf8')
+            #conn = MySQLdb.connect(user='seonghun', password='db20192455', db='seonghun$repoalarm',host='seonghun.mysql.pythonanywhere-services.com',charset='utf8')
+            conn = MySQLdb.connect(user='root', password='1234', db='open_source', charset='utf8')
             curs = conn.cursor()
 
             sql = "SELECT DATE_FORMAT(NOW(),'%Y%m%d%H%i%s');"
@@ -71,12 +68,10 @@ class UserView(APIView):
                 raise Exception('아이디는 비어 있으면 안됩니다.')
             if len(fav_repository) == 0:
                 raise Exception('관심 레파지토리는 비어 있으면 안됩니다.')
-            if len(nick_name) == 0:
-                raise Exception('별명은 비어 있으면 안됩니다.')
-            if len(type) == 0:
-                raise Exception('타입은 비어 있으면 안됩니다.')
             if len(branch) == 0:
                 raise Exception('브랜치명은 비어 있으면 안됩니다.')
+            type = 'kakao';
+            nick_name='shchoi';
             json = batch(id,fav_repository,nick_name,type,branch)
             return Response(json, status=200)
         except Exception as e:
@@ -86,8 +81,8 @@ def batch(id,fav_repository,nick_name,type,branch):
     try:
         conn = None
         fav_repository = fav_repository + "/branches/" + branch
-        conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
-        #conn = MySQLdb.connect(user='root', password='1234', db='open_source', charset='utf8')
+        #conn = MySQLdb.connect(user='seonghun', password='db20192455', db='seonghun$repoalarm',host='seonghun.mysql.pythonanywhere-services.com', charset='utf8')
+        conn = MySQLdb.connect(user='root', password='1234', db='open_source', charset='utf8')
         curs = conn.cursor()
         sql = "SELECT a.git_api_address,a.fav_repository,b.user_get_date FROM repository a inner join user b on a.fav_repository = b.fav_repository WHERE b.id=%s AND b.type=%s AND b.fav_repository=%s";
         curs.execute(sql, (id,type,fav_repository))
@@ -179,7 +174,7 @@ class SendAlias (APIView) :
             repoList = []
 
             conn = None
-            conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
+            conn = MySQLdb.connect(user='seonghun', password='db20192455', db='seonghun$repoalarm',host='seonghun.mysql.pythonanywhere-services.com', charset='utf8')
             curs = conn.cursor()
 
             sql = 'SELECT nick_name FROM user WHERE id = %s;'
@@ -207,7 +202,7 @@ class SendGitInfo (APIView) :
             repo_branch = []
 
             conn = None
-            conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
+            conn = MySQLdb.connect(user='seonghun', password='db20192455', db='seonghun$repoalarm',host='seonghun.mysql.pythonanywhere-services.com', charset='utf8')
             curs = conn.cursor()
 
             sql = 'SELECT fav_repository FROM user WHERE id = %s and nick_name = %s;'
@@ -233,7 +228,7 @@ def sendList (kakao_id) :
         repoList = []
 
         conn = None
-        conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
+        conn = MySQLdb.connect(user='seonghun', password='db20192455', db='seonghun$repoalarm',host='seonghun.mysql.pythonanywhere-services.com', charset='utf8')
         curs = conn.cursor()
 
         sql = 'SELECT nick_name FROM user WHERE id = %s;'
@@ -252,7 +247,7 @@ def sendList (kakao_id) :
 def returnGit (id, nick_name) :
     try : 
         conn = None
-        conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com', charset='utf8')
+        conn = MySQLdb.connect(user='seonghun', password='db20192455', db='seonghun$repoalarm',host='seonghun.mysql.pythonanywhere-services.com', charset='utf8')
         curs = conn.cursor()
 
         sql = 'SELECT fav_repository FROM user WHERE id = %s and nick_name = %s;'
@@ -283,7 +278,7 @@ def insertDb (id, fav_repository, type, nick_name, branch) :
             raise Exception('타입은 비어 있으면 안됩니다.')
         if len(branch) == 0:
             raise Exception('브랜치명은 비어 있으면 안됩니다.')
-        conn = MySQLdb.connect(user='margarets', password='db20192808', db='margarets$repoalarm',host='margarets.mysql.pythonanywhere-services.com',charset='utf8')
+        conn = MySQLdb.connect(user='seonghun', password='db20192455', db='seonghun$repoalarm',host='seonghun.mysql.pythonanywhere-services.com',charset='utf8')
         #conn = MySQLdb.connect(user='root', password='1234', db='open_source', charset='utf8')
         curs = conn.cursor()
 
